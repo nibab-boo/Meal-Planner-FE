@@ -1,0 +1,63 @@
+/* GLOBAL styles: only things shared by many files live here.
+   Everything else is in <style scoped> inside each component. */
+
+body { background: #f3f4f6; margin: 0; font-family: system-ui, sans-serif; color: #111827; }
+
+/* ── Buttons (used in every view) ───────────────────────── */
+.btn { font: inherit; cursor: pointer; border: 1px solid #d1d5db; background: white; color: #111827; padding: 0.45rem 0.95rem; border-radius: 6px; }
+.btn:hover { background: #f3f4f6; }
+.btn-primary { background: #2c6a4d; border-color: #2c6a4d; color: white; font-weight: 600; }
+.btn-primary:hover { background: #1f4f3a; }
+.btn-danger { color: #b3261e; border-color: #e9bdb8; }
+.btn-danger:hover { background: #fbe9e7; }
+.btn-small { padding: 0.2rem 0.6rem; font-size: 0.82rem; }
+
+
+/* ── Slide-in drawers (Recipes and Plans both use them) ────
+   .drawer             slides in from the LEFT  (the add / edit form)
+   .drawer.from-right  slides in from the RIGHT (the recipe details)
+   Closed: parked off-screen.   Open: slid into view over half the screen. */
+.drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 50vw;
+  min-width: 440px;
+  background: white;
+  overflow-y: auto;          /* long content scrolls inside the drawer */
+  z-index: 20;
+
+  transform: translateX(-100%);                          /* parked off the left edge */
+  visibility: hidden;                                    /* hidden drawer can't be tabbed into */
+  transition: transform 0.3s ease, visibility 0s linear 0.3s;
+}
+.drawer.open {
+  transform: translateX(0);                              /* slide in */
+  visibility: visible;
+  box-shadow: 4px 0 16px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, visibility 0s;
+}
+
+/* Same drawer, but parked on the right side instead */
+.drawer.from-right {
+  left: auto;
+  right: 0;
+  transform: translateX(100%);
+}
+.drawer.from-right.open {
+  transform: translateX(0);
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.15);
+}
+
+/* The page between the drawers: makes room while a drawer is open,
+   so the list stays visible instead of hiding under the drawer. */
+.slide-page { padding-left: 0; padding-right: 0; transition: padding 0.3s ease; }
+.slide-page.pushed-left  { padding-left:  max(50vw, 440px); }
+.slide-page.pushed-right { padding-right: max(50vw, 440px); }
+
+/* Small screens: a drawer takes the whole screen instead */
+@media (max-width: 900px) {
+  .drawer { width: 100vw; min-width: 0; }
+  .slide-page.pushed-left, .slide-page.pushed-right { padding-left: 0; padding-right: 0; }
+}
