@@ -1,0 +1,170 @@
+[
+  {
+    "id": 1,
+    "title": "Overnight Oats",
+    "description": "Make-ahead breakfast.",
+    "category": "Breakfast",
+    "area": "American",
+    "prepTime": 5,
+    "calories": 340,
+    "servings": 1,
+    "ingredients": [
+      {
+        "name": "Rolled oats",
+        "measure": "1/2 cup"
+      },
+      {
+        "name": "Milk",
+        "measure": "1/2 cup"
+      }
+    ],
+    "instructions": "Mix in a jar and chill overnight.",
+    "imageUrl": ""
+  },
+  {
+    "id": 2,
+    "title": "Grilled Salmon with Greens",
+    "description": "High-protein dinner.",
+    "category": "Seafood",
+    "area": "British",
+    "prepTime": 20,
+    "calories": 430,
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "Salmon fillets",
+        "measure": "2"
+      },
+      {
+        "name": "Spinach",
+        "measure": "200g"
+      }
+    ],
+    "instructions": "Grill the salmon 4 minutes per side. Wilt the spinach.",
+    "imageUrl": ""
+  },
+  {
+    "id": 3,
+    "title": "Spicy Arrabiata Penne",
+    "description": "Quick tomato and chilli pasta.",
+    "category": "Vegetarian",
+    "area": "Italian",
+    "prepTime": 25,
+    "calories": 520,
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "Penne rigate",
+        "measure": "1 pound"
+      },
+      {
+        "name": "Garlic",
+        "measure": "3 cloves"
+      }
+    ],
+    "instructions": "Boil the pasta. Fry garlic and chilli, add tomatoes, toss together.",
+    "imageUrl": ""
+  },
+  {
+    "id": 4,
+    "title": "Chicken Stir Fry",
+    "description": "Fast weeknight lunch.",
+    "category": "Chicken",
+    "area": "Chinese",
+    "prepTime": 15,
+    "calories": 480,
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "Chicken breast",
+        "measure": "300g"
+      },
+      {
+        "name": "Mixed vegetables",
+        "measure": "2 cups"
+      }
+    ],
+    "instructions": "Stir fry the chicken, add vegetables and sauce.",
+    "imageUrl": ""
+  },
+  {
+    "id": 5,
+    "title": "Greek Yogurt Parfait",
+    "description": "Light snack.",
+    "category": "Dessert",
+    "area": "Greek",
+    "prepTime": 5,
+    "calories": 220,
+    "servings": 1,
+    "ingredients": [
+      {
+        "name": "Greek yogurt",
+        "measure": "1 cup"
+      },
+      {
+        "name": "Berries",
+        "measure": "1/2 cup"
+      }
+    ],
+    "instructions": "Layer yogurt and berries in a glass.",
+    "imageUrl": ""
+  },
+  {
+    "id": 6,
+    "title": "Chakchouka ",
+    "description": "",
+    "category": "Miscellaneous",
+    "area": "Tunisian",
+    "prepTime": 30,
+    "calories": 500,
+    "servings": 2,
+    "ingredients": [
+      {
+        "name": "Tomatoes",
+        "measure": "4"
+      },
+      {
+        "name": "Olive Oil",
+        "measure": "2 tbs"
+      },
+      {
+        "name": "Onion",
+        "measure": "1 Diced"
+      },
+      {
+        "name": "Red Pepper",
+        "measure": "1 sliced"
+      },
+      {
+        "name": "Green Pepper",
+        "measure": "1 sliced"
+      },
+      {
+        "name": "Garlic",
+        "measure": "3 Cloves Crushed"
+      },
+      {
+        "name": "Cumin",
+        "measure": "1 tsp"
+      },
+      {
+        "name": "Paprika",
+        "measure": "1 tsp"
+      },
+      {
+        "name": "Salt",
+        "measure": "3/4 teaspoon"
+      },
+      {
+        "name": "Chili Powder",
+        "measure": "1/2 teaspoon"
+      },
+      {
+        "name": "Eggs",
+        "measure": "4"
+      }
+    ],
+    "instructions": "In a large cast iron skillet or saut\u00e9 pan with a lid, heat oil over medium high heat. Add the onion and saut\u00e9 for 2-3 minutes, until softened. Add the peppers and garlic, and saut\u00e9 for an additional 3-5 minutes. Add the tomatoes, cumin, paprika, salt, and chili powder. Mix well and bring the mixture to a simmer. Reduce the heat to medium low and continue to simmer, uncovered, 10-15 minutes until the mixture has thickened to your desired consistency. (Taste the sauce at this point and adjust for salt and spice, as desired.) Using the back of a spoon, make four craters in the mixture, large enough to hold an egg. Crack one egg into each of the craters. Cover the skillet and simmer for 5-7 minutes, until the eggs have set. Serve immediately with crusty bread or pita.",
+    "imageUrl": "https://www.themealdb.com/images/media/meals/gpz67p1560458984.jpg"
+  }
+]

@@ -31,7 +31,7 @@
         <textarea id="p-notes" v-model="form.notes"></textarea>
       </div>
     </div>
-
+    <p v-if="error" class="error-text">⚠ {{ error }}</p>
     <div class="form-footer">
       <button class="btn btn-primary">Save plan</button>
       <button type="button" class="btn" @click="emit('close')">Cancel</button>
@@ -44,6 +44,7 @@ import { reactive } from 'vue'
 
 const props = defineProps({
   plan: { type: Object, default: null },
+  error: { type: String, default: '' },
 })
 const emit = defineEmits(['save', 'close'])
 
@@ -96,4 +97,5 @@ textarea { min-height: 110px; resize: vertical; }
   background: white; border-top: 1px solid #e5e7eb;
   display: flex; gap: 0.5rem; padding: 0.9rem 0; margin-top: 1.2rem;
 }
+.error-text { color: #dc2626; margin: 0.5rem 0 0; }
 </style>
