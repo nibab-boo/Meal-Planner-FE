@@ -35,7 +35,7 @@ def list_recipes():
 def get_recipe(recipe_id: int):
     return found_or_404(data.get_one("recipes",recipe_id),"Recipe")
 
-@app.post("/recipes")
+@app.post("/recipes", status_code=201)
 def create_recipe(body: RecipeIn):
     return data.create("recipes", body.model_dump())
 
@@ -45,7 +45,7 @@ def update_recipe(recipe_id:int,body: RecipeIn):
     old_item = data.update("recipes",recipe_id, body.model_dump())
     return found_or_404(old_item,"recipe")
 
-@app.delete("/recipes/{recipe_id}")
+@app.delete("/recipes/{recipe_id}", status_code=204)
 def delete_recipe(recipe_id: int):
     if not data.delete_recipe(recipe_id):
         raise HTTPException(status_code=404, detail="Recipe not found")
