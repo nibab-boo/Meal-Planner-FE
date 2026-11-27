@@ -101,3 +101,12 @@ In a view:
 | Dashboard | `GET /stats` |
 | Recipes | `GET /recipes`, `GET /plans`, `GET /entries`, TheMealDB (categories, meals, details) |
 | Plans | `GET /plans`, `GET /recipes`, `GET /entries` |
+
+## Backend (api/)
+
+```
+cd api
+pip install fastapi "uvicorn[standard]"
+uvicorn main:app --reload --port 8000
+```
+Runs at http://localhost:8000 (docs at /docs). Start it before `npm run dev`.
