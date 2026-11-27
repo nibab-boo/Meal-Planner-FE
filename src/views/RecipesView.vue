@@ -2,7 +2,7 @@
   <div>
     <!-- LEFT DRAWER: add / edit form -->
     <div class="drawer" :class="{ open: showForm }">
-      <RecipeForm :key="formKey" :recipe="editing" @save="saveRecipe" @close="closeForm" />
+      <RecipeForm :key="formKey" :recipe="editing" :error="formError" @save="saveRecipe" @close="closeForm" />
     </div>
 
     <!-- RIGHT DRAWER: one recipe's details, plan usage, add to plan, remove from plan -->
@@ -75,51 +75,84 @@
 
 <script setup>
     import { ref, computed } from 'vue'
+    import { getJSON, send } from '../composables/request.js'
+
     import RecipeForm from '../components/Recipe/RecipeForm.vue'
     import RecipeDetail from '../components/Recipe/RecipeDetail.vue'
 
-    // ── PLACEHOLDER DATA (later: fetched from the API) ───────
-    const recipes = ref([
-    {
-        id: 1, title: 'Spicy Arrabiata Penne', description: 'Quick tomato and chilli pasta.',
-        category: 'Vegetarian', area: 'Italian', prepTime: 25, calories: 520, servings: 2,
-        ingredients: [{ name: 'Penne rigate', measure: '1 pound' }, { name: 'Garlic', measure: '3 cloves' }],
-        instructions: 'Boil the pasta. Fry garlic and chilli, add tomatoes, toss together.', imageUrl: '',
-    },
-    {
-        id: 2, title: 'Grilled Salmon with Greens', description: 'High-protein dinner.',
-        category: 'Seafood', area: 'British', prepTime: 20, calories: 430, servings: 2,
-        ingredients: [{ name: 'Salmon fillets', measure: '2' }, { name: 'Spinach', measure: '200g' }],
-        instructions: 'Grill the salmon 4 minutes per side. Wilt the spinach.', imageUrl: '',
-    },
-    {
-        id: 3, title: 'Overnight Oats', description: 'Make-ahead breakfast.',
-        category: 'Breakfast', area: 'American', prepTime: 5, calories: 340, servings: 1,
-        ingredients: [{ name: 'Rolled oats', measure: '1/2 cup' }, { name: 'Milk', measure: '1/2 cup' }],
-        instructions: 'Mix in a jar and chill overnight.', imageUrl: '',
-    },
-    ])
+    // // ── PLACEHOLDER DATA (later: fetched from the API) ───────
+    // const recipes = ref([
+    // {
+    //     id: 1, title: 'Spicy Arrabiata Penne', description: 'Quick tomato and chilli pasta.',
+    //     category: 'Vegetarian', area: 'Italian', prepTime: 25, calories: 520, servings: 2,
+    //     ingredients: [{ name: 'Penne rigate', measure: '1 pound' }, { name: 'Garlic', measure: '3 cloves' }],
+    //     instructions: 'Boil the pasta. Fry garlic and chilli, add tomatoes, toss together.', imageUrl: '',
+    // },
+    // {
+    //     id: 2, title: 'Grilled Salmon with Greens', description: 'High-protein dinner.',
+    //     category: 'Seafood', area: 'British', prepTime: 20, calories: 430, servings: 2,
+    //     ingredients: [{ name: 'Salmon fillets', measure: '2' }, { name: 'Spinach', measure: '200g' }],
+    //     instructions: 'Grill the salmon 4 minutes per side. Wilt the spinach.', imageUrl: '',
+    // },
+    // {
+    //     id: 3, title: 'Overnight Oats', description: 'Make-ahead breakfast.',
+    //     category: 'Breakfast', area: 'American', prepTime: 5, calories: 340, servings: 1,
+    //     ingredients: [{ name: 'Rolled oats', measure: '1/2 cup' }, { name: 'Milk', measure: '1/2 cup' }],
+    //     instructions: 'Mix in a jar and chill overnight.', imageUrl: '',
+    // },
+    // ])
 
-    // The plans (later: GET /plans). Used for the "Add to a plan" dropdown.
-    const plans = ref([
-    { id: 1, name: 'Client A – Week 47' },
-    { id: 2, name: 'Client B – Week 47' },
-    { id: 3, name: 'Client A – Week 46' },
-    ])
+    // // The plans (later: GET /plans). Used for the "Add to a plan" dropdown.
+    // const plans = ref([
+    // { id: 1, name: 'Client A – Week 47' },
+    // { id: 2, name: 'Client B – Week 47' },
+    // { id: 3, name: 'Client A – Week 46' },
+    // ])
 
-    // The entries = the link between recipes and plans (later: GET /entries).
-    // One entry = one recipe, in one plan, on one day, in one meal slot.
-    const entries = ref([
-    { id: 1, planId: 1, recipeId: 3, day: 'Monday',    mealType: 'Breakfast', servings: 1 },
-    { id: 2, planId: 1, recipeId: 2, day: 'Monday',    mealType: 'Dinner',    servings: 2 },
-    { id: 3, planId: 1, recipeId: 2, day: 'Thursday',  mealType: 'Dinner',    servings: 2 },
-    { id: 4, planId: 2, recipeId: 1, day: 'Tuesday',   mealType: 'Lunch',     servings: 2 },
-    { id: 5, planId: 3, recipeId: 3, day: 'Monday',    mealType: 'Breakfast', servings: 1 },
-    { id: 6, planId: 2, recipeId: 3, day: 'Tuesday',   mealType: 'Breakfast', servings: 1 },
-    ])
+    // // The entries = the link between recipes and plans (later: GET /entries).
+    // // One entry = one recipe, in one plan, on one day, in one meal slot.
+    // const entries = ref([
+    // { id: 1, planId: 1, recipeId: 3, day: 'Monday',    mealType: 'Breakfast', servings: 1 },
+    // { id: 2, planId: 1, recipeId: 2, day: 'Monday',    mealType: 'Dinner',    servings: 2 },
+    // { id: 3, planId: 1, recipeId: 2, day: 'Thursday',  mealType: 'Dinner',    servings: 2 },
+    // { id: 4, planId: 2, recipeId: 1, day: 'Tuesday',   mealType: 'Lunch',     servings: 2 },
+    // { id: 5, planId: 3, recipeId: 3, day: 'Monday',    mealType: 'Breakfast', servings: 1 },
+    // { id: 6, planId: 2, recipeId: 3, day: 'Tuesday',   mealType: 'Breakfast', servings: 1 },
+    // ])
 
-    const loading = ref(false)
+    // const loading = ref(false)
+    // const error   = ref(null)
+
+        // ── DATA from the API ────────────────────────────────────
+    // Start empty; loadAll() fills them from the server.
+    const recipes = ref([])
+    const plans   = ref([])
+    const entries = ref([])
+
+    const loading = ref(true)
     const error   = ref(null)
+
+    // Load all three lists at the same time
+    async function loadAll() {
+        loading.value = true
+        error.value = null
+        try {
+            const [r, p, e] = await Promise.all([
+                getJSON('/recipes'),
+                getJSON('/plans'),
+                getJSON('/entries'),
+            ])
+            recipes.value = r
+            plans.value = p
+            entries.value = e
+        } catch (err) {
+            error.value = err.message
+        } finally {
+            loading.value = false
+        }
+    }
+
+    loadAll()
 
     // ── LEFT DRAWER: the add / edit form ─────────────────────
     const showForm = ref(false)   // is the form drawer open?
@@ -127,6 +160,7 @@
     const formKey  = ref(0)       // a new key = a brand-new form (clears old text)
 
     function openAdd() {
+    formError.value = ''
     editing.value = null
     formKey.value++
     showDetail.value = false    // only one drawer at a time
@@ -134,6 +168,7 @@
     }
 
     function openEdit(recipe) {
+    formError.value = ''
     editing.value = recipe
     formKey.value++
     showDetail.value = false
@@ -185,66 +220,81 @@
     return new Set(planIds).size
     }
 
-    // ── ADD / REMOVE A RECIPE FROM A PLAN ────────────────────
-    function nextEntryId() {
-    return Math.max(0, ...entries.value.map(e => e.id)) + 1
+    // // ── ADD / REMOVE A RECIPE FROM A PLAN ────────────────────
+    // function nextEntryId() {
+    // return Math.max(0, ...entries.value.map(e => e.id)) + 1
+    // }
+
+    async function addEntry(data) {
+      entryError.value = ''
+      try {
+          const created = await send('POST', '/entries', {
+              ...data,                     // planId, day, mealType, servings (from RecipeDetail)
+              recipeId: selectedId.value,  // the recipe whose drawer is open
+          })
+          entries.value.push(created)
+      } catch (err) {
+          entryError.value = err.message   // e.g. the server's 409 "already in that plan" message
+      }
     }
 
-    function addEntry(data) {
-    // Same recipe + plan + day + meal slot twice is not allowed.
-    // (Later the SERVER checks this and sends back a 409 error message.)
-    const duplicate = entries.value.some(e =>
-        e.recipeId === selectedId.value &&
-        e.planId === data.planId &&
-        e.day === data.day &&
-        e.mealType === data.mealType
-    )
-    if (duplicate) {
-        entryError.value = `This recipe is already in that plan on ${data.day} ${data.mealType}.`
-        return
+    async function removeEntry(entry) {
+      if (!confirm(`Remove from "${entry.planName}" (${entry.day} ${entry.mealType})?`)) return
+      try {
+          await send('DELETE', `/entries/${entry.id}`)
+          entries.value = entries.value.filter(e => e.id !== entry.id)
+      } catch (err) {
+          entryError.value = err.message
+      }
     }
 
-    entryError.value = ''
-    entries.value.push({ ...data, id: nextEntryId(), recipeId: selectedId.value })
-    }
+    // // ── ADD / EDIT / DELETE A RECIPE ─────────────────────────
+    // function nextId() {
+    // return Math.max(0, ...recipes.value.map(r => r.id)) + 1
+    // }
 
-    function removeEntry(entry) {
-    if (!confirm(`Remove from "${entry.planName}" (${entry.day} ${entry.mealType})?`)) return
-    entries.value = entries.value.filter(e => e.id !== entry.id)
-    }
+    const formError = ref('')    // message shown at the bottom of the recipe form
 
-    // ── ADD / EDIT / DELETE A RECIPE ─────────────────────────
-    function nextId() {
-    return Math.max(0, ...recipes.value.map(r => r.id)) + 1
-    }
-
-    function saveRecipe(data) {
-    if (editing.value) {
-        // EDIT: replace the recipe that has the same id
-        recipes.value = recipes.value.map(r =>
-        r.id === editing.value.id ? { ...r, ...data } : r
-        )
-    } else {
-        // ADD: give it a new id and put it in the list
-        recipes.value.push({ ...data, id: nextId() })
-    }
-    closeForm()
-    }
-
-    function deleteRecipe(recipe) {
-        const count = planCount(recipe.id)
-        const warning = count > 0 ? ` It will also be removed from ${count} plan(s).` : ''
-        if (!confirm(`Delete "${recipe.title}"?${warning}`)) return
-
-        recipes.value = recipes.value.filter(r => r.id !== recipe.id)
-        // CASCADE: a recipe that no longer exists can't stay in any plan
-        entries.value = entries.value.filter(e => e.recipeId !== recipe.id)
-
-        if (selectedId.value === recipe.id) {
-            closeDetail()
-            selectedId.value = null
+    async function saveRecipe(data) {
+        formError.value = ''
+        try {
+            if (editing.value) {
+                // EDIT: PUT the changes, then swap in the server's version
+                const updated = await send('PUT', `/recipes/${editing.value.id}`, data)
+                recipes.value = recipes.value.map(r => r.id === updated.id ? updated : r)
+            } else {
+                // ADD: POST it; the server sends it back WITH its new id
+                const created = await send('POST', '/recipes', data)
+                recipes.value.push(created)
+            }
+            closeForm()
+        } catch (err) {
+            formError.value = err.message   // keep the drawer open and show why
         }
-        if (editing.value && editing.value.id === recipe.id) closeForm()
+    }
+
+    async function deleteRecipe(recipe) {
+      const count = planCount(recipe.id)
+      const warning = count > 0 ? ` It will also be removed from ${count} plan(s).` : ''
+      if (!confirm(`Delete "${recipe.title}"?${warning}`)) return
+
+      try {
+          await send('DELETE', `/recipes/${recipe.id}`)
+      } catch (err) {
+          alert(`Could not delete: ${err.message}`)
+          return                                   // keep the screen as it was
+      }
+
+      // The SERVER already removed the recipe AND its entries (cascade).
+      // Do the same on screen, so we don't have to reload everything.
+      recipes.value = recipes.value.filter(r => r.id !== recipe.id)
+      entries.value = entries.value.filter(e => e.recipeId !== recipe.id)
+
+      if (selectedId.value === recipe.id) {
+          closeDetail()
+          selectedId.value = null
+      }
+      if (editing.value && editing.value.id === recipe.id) closeForm()
     }
 </script>
 

@@ -111,7 +111,7 @@
         <textarea id="r-instr" v-model="form.instructions"></textarea>
       </div>
     </div>
-
+        <p v-if="error" class="error-text">⚠ {{ error }}</p>
     <div class="form-footer">
       <button class="btn btn-primary">Save recipe</button>
       <button type="button" class="btn" @click="emit('close')">Cancel</button>
@@ -124,6 +124,7 @@ import { ref, reactive, watch, onMounted } from 'vue'
 
 const props = defineProps({
   recipe: { type: Object, default: null },
+  error: {type: String,default: ''},
 })
 const emit = defineEmits(['save', 'close'])
 
@@ -175,8 +176,7 @@ async function loadCategories() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const data = await res.json()
 
-    // Checking Categories
-    console.log('TheMealDB categories:', data)
+    
     categories.value = (data.categories ?? []).map(c => c.strCategory)
   } catch (e) {
     categoriesError.value = e.message
@@ -229,8 +229,7 @@ watch(importMealId, async (id) => {
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const data = await res.json()
 
-    // Checking Details: 2nd call
-    console.log('TheMealDB details:', data)
+    
     const meal = data.meals ? data.meals[0] : null   // "meals" is a list with ONE item
     if (!meal) throw new Error('Meal not found')
 

@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "planId": 1,
+    "recipeId": 1,
+    "day": "Monday",
+    "mealType": "Breakfast",
+    "servings": 1
+  },
+  {
+    "id": 2,
+    "planId": 1,
+    "recipeId": 2,
+    "day": "Monday",
+    "mealType": "Dinner",
+    "servings": 2
+  },
+  {
+    "id": 3,
+    "planId": 1,
+    "recipeId": 2,
+    "day": "Thursday",
+    "mealType": "Dinner",
+    "servings": 2
+  },
+  {
+    "id": 4,
+    "planId": 1,
+    "recipeId": 4,
+    "day": "Tuesday",
+    "mealType": "Lunch",
+    "servings": 2
+  },
+  {
+    "id": 5,
+    "planId": 1,
+    "recipeId": 5,
+    "day": "Monday",
+    "mealType": "Snack",
+    "servings": 1
+  },
+  {
+    "id": 6,
+    "planId": 2,
+    "recipeId": 3,
+    "day": "Tuesday",
+    "mealType": "Lunch",
+    "servings": 2
+  },
+  {
+    "id": 7,
+    "planId": 2,
+    "recipeId": 1,
+    "day": "Wednesday",
+    "mealType": "Breakfast",
+    "servings": 1
+  },
+  {
+    "id": 8,
+    "planId": 3,
+    "recipeId": 1,
+    "day": "Monday",
+    "mealType": "Breakfast",
+    "servings": 1
+  },
+  {
+    "id": 9,
+    "planId": 3,
+    "recipeId": 3,
+    "day": "Tuesday",
+    "mealType": "Breakfast",
+    "servings": 1
+  },
+  {
+    "id": 10,
+    "planId": 3,
+    "recipeId": 6,
+    "day": "Thursday",
+    "mealType": "Breakfast",
+    "servings": 1
+  }
+]

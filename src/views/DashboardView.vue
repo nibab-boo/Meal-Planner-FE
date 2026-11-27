@@ -39,49 +39,65 @@
 <!-- JS -->
 <script setup>
     import { ref, computed } from 'vue'
+    import { API } from '../constants.js'
+    import { useFetch } from '../composables/useFetch.js'
 
     // Components
     import StatCard from '../components/Dashboard/StatCard.vue'
     import RecentRecipes from '../components/Dashboard/RecentRecipes.vue'
     import BarPanel from '../components/Dashboard/BarPanel.vue'
 
-    // ── PLACEHOLDER DATA ─────────────────────────────────────
-    // Same shape the API will return later, so only this block changes.
-    const stats = ref({
-    totalRecipes: 12,
-    totalPlans: 4,
-    totalEntries: 23,
-    activePlans: 3,
-    recentRecipes: [
-        { id: 12, title: 'Apple Frangipan Tart',      category: 'Dessert',    prepTime: 60, calories: 390 },
-        { id: 11, title: 'Overnight Oats',            category: 'Breakfast',  prepTime: 5,  calories: 340 },
-        { id: 10, title: 'Grilled Salmon with Greens', category: 'Seafood',   prepTime: 20, calories: 430 },
-        { id: 9,  title: 'Spicy Arrabiata Penne',     category: 'Vegetarian', prepTime: 25, calories: 520 },
-    ],
-    mostUsed: [
-        { id: 10, title: 'Grilled Salmon with Greens', count: 5 },
-        { id: 11, title: 'Overnight Oats',             count: 4 },
-        { id: 9,  title: 'Spicy Arrabiata Penne',      count: 2 },
-    ],
-    categoryBreakdown: [
-        { category: 'Seafood',    count: 4 },
-        { category: 'Dessert',    count: 3 },
-        { category: 'Breakfast',  count: 3 },
-        { category: 'Vegetarian', count: 2 },
-    ],
-    })
 
-    // ── LOADING STATE ───────────────────────────────────────
-    const loading = ref(false)
-    const error   = ref(null)
+    // ── LIVE DATA from GET /stats ───────────────────────────
+    const { data: stats, loading, error } = useFetch(`${API}/stats`)
 
-    // Reshape the data into the { label, value } list that BarPanel expects
+    // Reshape the data into the { label, value } list that BarPanel expects.
+    // "?? []" = use an empty list while stats is still null (before it arrives)
     const mostUsedItems = computed(() =>
-    stats.value.mostUsed.map(r => ({ label: r.title, value: r.count }))
+        (stats.value?.mostUsed ?? []).map(r => ({ label: r.title, value: r.count }))
     )
     const categoryItems = computed(() =>
-    stats.value.categoryBreakdown.map(c => ({ label: c.category, value: c.count }))
+        (stats.value?.categoryBreakdown ?? []).map(c => ({ label: c.category, value: c.count }))
     )
+
+
+    // // ── PLACEHOLDER DATA ─────────────────────────────────────
+    // // Same shape the API will return later, so only this block changes.
+    // const stats = ref({
+    // totalRecipes: 12,
+    // totalPlans: 4,
+    // totalEntries: 23,
+    // activePlans: 3,
+    // recentRecipes: [
+    //     { id: 12, title: 'Apple Frangipan Tart',      category: 'Dessert',    prepTime: 60, calories: 390 },
+    //     { id: 11, title: 'Overnight Oats',            category: 'Breakfast',  prepTime: 5,  calories: 340 },
+    //     { id: 10, title: 'Grilled Salmon with Greens', category: 'Seafood',   prepTime: 20, calories: 430 },
+    //     { id: 9,  title: 'Spicy Arrabiata Penne',     category: 'Vegetarian', prepTime: 25, calories: 520 },
+    // ],
+    // mostUsed: [
+    //     { id: 10, title: 'Grilled Salmon with Greens', count: 5 },
+    //     { id: 11, title: 'Overnight Oats',             count: 4 },
+    //     { id: 9,  title: 'Spicy Arrabiata Penne',      count: 2 },
+    // ],
+    // categoryBreakdown: [
+    //     { category: 'Seafood',    count: 4 },
+    //     { category: 'Dessert',    count: 3 },
+    //     { category: 'Breakfast',  count: 3 },
+    //     { category: 'Vegetarian', count: 2 },
+    // ],
+    // })
+
+    // // ── LOADING STATE ───────────────────────────────────────
+    // const loading = ref(false)
+    // const error   = ref(null)
+
+    // // Reshape the data into the { label, value } list that BarPanel expects
+    // const mostUsedItems = computed(() =>
+    // stats.value.mostUsed.map(r => ({ label: r.title, value: r.count }))
+    // )
+    // const categoryItems = computed(() =>
+    // stats.value.categoryBreakdown.map(c => ({ label: c.category, value: c.count }))
+    // )
 </script>
 
 
